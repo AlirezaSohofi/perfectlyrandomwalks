@@ -1,0 +1,19 @@
+<?xml version="1.0" encoding="utf-8" standalone="yes"?>
+<rss version="2.0" xmlns:atom="http://www.w3.org/2005/Atom">
+  <channel>
+    <title>Essays on Alireza Sohofi</title>
+    <link>http://localhost:1313/essays/</link>
+    <description>Recent content in Essays on Alireza Sohofi</description>
+    <generator>Hugo</generator>
+    <language>en-us</language>
+    <lastBuildDate>Mon, 24 Mar 2025 23:03:02 +0100</lastBuildDate>
+    <atom:link href="http://localhost:1313/essays/rss.xml" rel="self" type="text/xml" />
+    <item>
+      <title>My First Essay</title>
+      <link>http://localhost:1313/essays/first-essay/</link>
+      <pubDate>Mon, 24 Mar 2025 23:03:02 +0100</pubDate>
+      <guid>http://localhost:1313/essays/first-essay/</guid>
+      <description>&lt;p&gt;he Mutoscope works on the same principle as the flip book. The individual image frames are conventional black-and-white, silver-based photographic prints on tough, flexible opaque cards. The image on each card is made by contact printing each frame of the original 70 mm film.[3] Rather than being bound into a booklet, the cards are attached to a circular core, similar to a huge Rolodex. A reel typically holds about 850 cards, giving a viewing time of about one minute.[4] The reel with cards attached has a total diameter of about 10 inches (25 cm); the individual cards have dimensions of about 2+3⁄4 in × 1+7⁄8 in (7.0 cm × 4.8 cm).&lt;/p&gt;</description>
+    </item>
+  </channel>
+</rss>
