@@ -1,4 +1,21 @@
-baseURL = "/" # Use root for local testing
+baseURL = "http://localhost:1313/"
 languageCode = "en-us"
-title = "Minimal Test Site"
-# theme = "" # Ensure no theme is active
+title = "My Evolving Thoughts"
+# theme = ""  <-- IMPORTANT: Commented out or deleted
+
+# Keep other settings like taxonomies etc. if you added them
+[taxonomies]
+  tag = "tags"
+
+[outputs]
+  home = ["HTML", "RSS"]
+  page = ["HTML"]
+  section = ["HTML", "RSS"]
+  taxonomy = ["HTML", "RSS"]
+  term = ["HTML", "RSS"]
+
+[build]
+  writeStats = true 
+
+[markup.goldmark.renderer]
+  unsafe = true 

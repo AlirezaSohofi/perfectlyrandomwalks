@@ -6,11 +6,17 @@
 <title>{{ block "title" . }}{{ if .IsHome }}{{ .Site.Title }}{{ else }}{{ .Title }} | {{ .Site.Title }}{{ end }}{{ end }}</title>
 
 {{/* --- CSS Processing --- */}}
-{{ $cssOptions := (dict "config" "./postcss.config.js" ) }} 
+
+<!-- {{ $cssOptions := (dict "config" "./postcss.config.js") }}
 {{ $style := resources.Get "css/main.css" | css.PostCSS $cssOptions | minify | fingerprint }}
-<link rel="stylesheet" href="{{ $style.RelPermalink }}">
+<link rel="stylesheet" href="{{ $style.RelPermalink }}"> -->
+
+
+{{ $style := resources.Get "css/main.css" | css.PostCSS | resources.Minify | resources.Fingerprint }} 
+<link rel="stylesheet" href="{{ $style.RelPermalink }}" integrity="{{ $style.Data.Integrity }}"> {{/* Added integrity attribute back */}}
 {{/* --- End CSS Processing --- */}}
 
 {{ hugo.Generator }}
 
 {{/* Dark mode script - Add back later if CSS works */}}
+
