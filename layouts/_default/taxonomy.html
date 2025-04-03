@@ -1,0 +1,19 @@
+{{/* layouts/_default/taxonomy.html */}}
+{{ define "main" }}
+  <div class="p-4 md:p-6 lg:p-8">
+    {{/* Title will be like "Tags" or "Categories" */}}
+    <h1 class="text-2xl font-bold mb-4">{{ .Title }}</h1>
+
+    <ul class="space-y-1">
+      {{/* Loop through the terms (e.g., specific tags) alphabetically */}}
+      {{ range .Data.Terms.Alphabetical }}
+        <li>
+          {{/* Link to the page for that specific term (e.g., /tags/ai/) */}}
+          <a href="{{ .Page.RelPermalink }}" class="text-blue-600 dark:text-blue-400 hover:underline">
+            {{ .Page.Title }} <span class="text-sm text-gray-500">({{ .Count }})</span> {{/* Show count */}}
+          </a>
+        </li>
+      {{ end }}
+    </ul>
+  </div>
+{{ end }}

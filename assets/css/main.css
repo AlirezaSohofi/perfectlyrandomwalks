@@ -1,0 +1,45 @@
+/* assets/css/main.css */
+
+@tailwind base;
+@tailwind components;
+@tailwind utilities;
+
+/* --- Sidebar Specific Styles --- */
+
+/* Styles for the mobile overlay behavior */
+.sidebar {
+    /* Default state: hidden off-screen on small devices */
+    transform: translateX(-100%);
+    position: fixed; /* Make it fixed for overlay effect on mobile */
+    top: 0;
+    left: 0;
+    height: 100vh; /* Full height */
+    z-index: 40; /* Ensure it's above content but below header maybe */
+    box-shadow: 2px 0 5px rgba(0,0,0,0.1);
+    transition: transform 0.3s ease-in-out;
+    /* Tailwind handles bg colors via classes in HTML */
+    /* Explicit width needed here as w-48 class might not apply correctly when fixed/transformed */
+    width: 12rem; /* 192px if base font size is 16px, matching w-48 */
+}
+
+.sidebar.is-open {
+    transform: translateX(0); /* Slide in when open */
+}
+
+/* On medium screens and up, override mobile overlay styles */
+@media (min-width: 768px) { /* md breakpoint */
+    .sidebar {
+        position: static; /* Not fixed anymore */
+        transform: translateX(0); /* Always visible */
+        height: auto; /* Auto height */
+        box-shadow: none;
+        z-index: auto;
+        transition: none; /* No transition needed for static element */
+        /* Width is handled by w-48 class in HTML now */
+        width: auto;
+    }
+    /* Hide the mobile close button on desktop */
+    #sidebar-toggle-btn {
+        display: none;
+    }
+}

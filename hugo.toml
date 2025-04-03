@@ -1,0 +1,4 @@
+baseURL = "/" # Use root for local testing
+languageCode = "en-us"
+title = "Minimal Test Site"
+# theme = "" # Ensure no theme is active
