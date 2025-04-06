@@ -1,6 +1,6 @@
 baseURL = "http://localhost:1313/"
 languageCode = "en-us"
-title = "My Evolving Thoughts"
+title = "Perfectly Random Walks"
 # theme = ""  <-- IMPORTANT: Commented out or deleted
 
 # Keep other settings like taxonomies etc. if you added them
@@ -18,4 +18,4 @@ title = "My Evolving Thoughts"
   writeStats = true 
 
 [markup.goldmark.renderer]
-  unsafe = true 
+  unsafe = true

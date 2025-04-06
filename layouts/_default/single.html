@@ -1,0 +1,32 @@
+{{/* layouts/_default/single.html */}}
+{{ define "main" }}
+{{/* REMOVED max-w-none - it will inherit max-w-content from baseof.html */}}
+<article class="prose dark:prose-invert lg:prose-lg xl:prose-xl"> {{/* Basic prose styling */}}
+    {{/* Use configured text sizes and spacing */}}
+    <header class="mb-spacing-lg border-b border-subtle pb-spacing-md">
+        <h1 class="!mb-spacing-xs text-size-xl md:text-size-2xl font-bold tracking-tight">{{ .Title }}</h1>
+        {{/* Display metadata only for relevant content types (e.g., 'posts'), not 'page' */}}
+        {{ if eq .Type "posts" }} {{/* Adjust "posts" if your content is in a different section */}}
+        <p class="text-secondary text-size-sm">
+            Published on {{ .Date.Format "January 2, 2006" }}
+            {{/* Removed complex tag rendering for simplicity, assuming it's handled elsewhere if needed */}}
+        </p>
+        {{ end }}
+    </header>
+
+    <div class="content">
+        {{ .Content }}
+    </div>
+
+    {{/* Backlinks can be added here later */}}
+    {{/*
+    <aside class="mt-12 border-t pt-6 dark:border-gray-700">
+        <h3 class="text-xl font-semibold mb-3">Linked From</h3>
+        <ul>
+            <li>(Backlinks functionality to be added)</li>
+        </ul>
+    </aside>
+    */}}
+
+</article>
+{{ end }}

@@ -1,14 +1,110 @@
 {{/* layouts/index.html */}}
-
-{{/* Optional: Define the title block for the <title> tag in head.html */}}
-{{ define "title" }}Homepage | {{ .Site.Title }}{{ end }} 
-
-{{/* This MUST define the 'main' block specified in baseof.html */}}
 {{ define "main" }}
-    <h2 class="text-2xl font-semibold mb-4">Homepage Content Area</h2>
-    <p class="mb-2">This content comes from layouts/index.html.</p>
-    <p class="text-blue-600 dark:text-blue-400">Content Title: {{ .Title }}</p>
-    <button class="mt-4 px-4 py-2 bg-blue-500 hover:bg-blue-700 text-white font-bold rounded">
-      Test Button
-    </button>
+<div class="homepage-content">
+    {{/* Tag Filtering Section */}}
+    <section id="tag-filter-section" class="mb-8">
+        {{/* Use configured secondary text */}}
+        <h2 class="text-sm font-semibold uppercase tracking-wider text-secondary mb-3">Filter by Topic</h2>
+        <div class="flex flex-wrap gap-2">
+            {{/* Use configured tag styles */}}
+            <button class="tag-filter-btn active inline-flex items-center px-3 py-1 bg-tag-bg-active border border-tag-border-active text-tag-text-active rounded-tag text-sm font-medium transition-colors" data-tag="all">
+                All Topics
+            </button>
+            {{ range .Site.Taxonomies.tags.Alphabetical }}
+                {{/* Use configured tag styles */}}
+                <button class="tag-filter-btn inline-flex items-center px-3 py-1 bg-tag-bg border border-tag-border text-tag-text rounded-tag text-sm font-medium hover:bg-tag-bg-hover hover:border-tag-border-hover transition-colors" data-tag="{{ .Name | lower }}">
+                    {{ .Page.Title }} 
+                    {{/* Use configured count background */}}
+                    <span class="ml-1.5 text-xs font-mono bg-tag-bg-count rounded px-1">{{ .Count }}</span> 
+                </button>
+            {{ end }}
+        </div>
+    </section>
+
+    {{/* Article List Section */}}
+    <section id="article-list-section">
+        {{/* Use configured secondary text */}}
+        <h2 class="text-sm font-semibold uppercase tracking-wider text-secondary mb-3">Essays</h2>
+        <ul id="article-list" class="space-y-3">
+            {{ $pages := where .Site.RegularPages "Type" "in" .Site.Params.mainSections | default .Site.RegularPages }}
+            {{ range $pages.ByDate.Reverse }}
+                {{ $tagsStr := "" }}
+                {{ with .Params.tags }}
+                    {{ $tagsStr = delimit . " " | lower }}
+                {{ end }}
+                {{/* Use configured subtle border */}}
+                <li class="article-item border-b border-subtle pb-3" data-tags="{{ $tagsStr }}">
+                    {{/* Use configured primary text and accent hover */}}
+                    <a href="{{ .RelPermalink }}" class="text-lg font-medium text-primary hover:text-accent transition-colors group">
+                       {{ .Title }}
+                       <span class="opacity-0 group-hover:opacity-100 transition-opacity duration-200 ml-1">→</span>
+                    </a>
+                </li>
+            {{ end }}
+        </ul>
+        {{/* Use configured secondary text */}}
+        <p id="no-articles-msg" class="hidden text-secondary mt-6">No articles found matching the selected topic.</p>
+    </section>
+</div>
+
+{{/* Updated JS for Tag Filtering using configured classes */}}
+<script>
+document.addEventListener('DOMContentLoaded', () => {
+    const tagFilterSection = document.getElementById('tag-filter-section');
+    if (!tagFilterSection) return; 
+
+    const articleList = document.getElementById('article-list');
+    const noArticlesMsg = document.getElementById('no-articles-msg');
+    const tagButtons = tagFilterSection.querySelectorAll('.tag-filter-btn');
+
+    // Function to update styles based on active state using configured names
+    const updateButtonStyles = (button, isActive) => {
+        // Base classes (apply universally if needed, or rely on HTML)
+        button.classList.add('border', 'text-sm', 'font-medium', 'transition-colors', 'rounded-tag'); 
+
+        // Active classes from config
+        const activeClasses = ['active', 'bg-tag-bg-active', 'border-tag-border-active', 'text-tag-text-active'];
+        // Inactive classes from config
+        const inactiveClasses = ['bg-tag-bg', 'border-tag-border', 'text-tag-text'];
+        // Hover classes (managed by Tailwind via hover: prefixes in HTML)
+
+        if (isActive) {
+            button.classList.remove(...inactiveClasses);
+            button.classList.add(...activeClasses);
+        } else {
+            button.classList.remove(...activeClasses);
+            button.classList.add(...inactiveClasses);
+        }
+        // Ensure count span style remains distinct if needed
+        const countSpan = button.querySelector('span');
+        if (countSpan) {
+             countSpan.classList.add('bg-tag-bg-count'); 
+        }
+    };
+    
+    tagButtons.forEach(btn => {
+        updateButtonStyles(btn, btn.classList.contains('active'));
+    });
+
+    tagButtons.forEach(button => {
+        button.addEventListener('click', () => {
+            tagButtons.forEach(btn => updateButtonStyles(btn, false)); 
+            updateButtonStyles(button, true); 
+
+            if (articleList && noArticlesMsg) {
+                const selectedTag = button.getAttribute('data-tag');
+                const articleItems = articleList.querySelectorAll('.article-item');
+                let articlesFound = 0;
+                articleItems.forEach(item => {
+                    const itemTags = item.getAttribute('data-tags')?.split(' ') || [];
+                    const shouldShow = selectedTag === 'all' || itemTags.includes(selectedTag);
+                    item.classList.toggle('hidden', !shouldShow);
+                    if (shouldShow) articlesFound++;
+                });
+                noArticlesMsg.classList.toggle('hidden', articlesFound > 0);
+            }
+        });
+    });
+});
+</script>
 {{ end }}
