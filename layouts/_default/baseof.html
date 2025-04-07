@@ -9,14 +9,14 @@
     {{ partial "header.html" . }}
 
     {{/* Use configured content width */}}
-    <main id="main-content" class="flex-1 w-full max-w-content mx-auto px-4 py-8 md:px-6 md:py-10">
+    <main id="main-content" class="flex-1 w-full max-w-prose px-4 py-8 md:px-6 md:py-10">
         {{ block "main" . }}{{ end }}
     </main>
 
     {{/* Use configured secondary text color */}}
     <footer class="mt-auto py-4 text-center text-xs text-secondary">
       {{/* Use configured border color and content width */}}
-      <div class="max-w-content mx-auto border-t border-subtle pt-4 px-4 md:px-6"> 
+      <div class="max-w-prose mx-auto border-t border-subtle pt-4 px-4 md:px-6"> 
           © {{ now.Format "2006" }} Alireza Sohofi | Powered by <a href="https://gohugo.io/" target="_blank" rel="noopener noreferrer" class="hover:underline">Hugo</a>
       </div>
     </footer>
