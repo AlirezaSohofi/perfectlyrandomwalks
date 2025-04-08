@@ -17,15 +17,19 @@ module.exports = {
           'subtle': '#d1d5db', // Very light gray for borders (like gray-300)
           'strong': '#000000', // Black for strong borders/active elements
           'accent': '#3b82f6', // Blue for link hovers (like blue-500)
-          'tag-bg': '#ffffff', // Default tag background
-          'tag-bg-active': '#f3f4f6', // Active tag background (light gray)
-          'tag-bg-hover': '#f3f4f6', // Hover tag background (light gray)
+          // 'tag-bg': '#ffffff', // Default tag background
+          // 'tag-bg-active': '#f3f4f6', // Active tag background (light gray)
+          // 'tag-bg-hover': '#f3f4f6', // Hover tag background (light gray)
+          'tag-bg': '#ffffff', // Default tag background (white)
+          'tag-bg-hover': '#f9fafb', // Hover tag background (gray-50) - More subtle
+          'tag-bg-active': '#f3f4f6', // Active tag background (gray-100) - Light Gray
           'tag-bg-count': '#e5e7eb', // Background for the count number in tags
           'tag-text': '#1f2937', // Default tag text (dark gray)
           'tag-text-active': '#000000', // Active tag text (black)
-          'tag-border': '#374151', // Default tag border (darker gray like gray-700)
+          'tag-border': '#d1d5db', // Default tag border (darker gray like gray-700)
           'tag-border-active': '#000000', // Active tag border (black)
-          'tag-border-hover': '#000000', // Hover tag border (black)
+          // 'tag-border-hover': '#000000', // Hover tag border (black)
+          'tag-border-hover': '#9ca3af',
         },
         // Define custom max-width for content
         maxWidth: {

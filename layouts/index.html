@@ -4,7 +4,7 @@
     {{/* Tag Filtering Section */}}
     <section id="tag-filter-section" class="mb-8">
         {{/* Use configured secondary text */}}
-        <h2 class="text-sm font-semibold uppercase tracking-wider text-secondary mb-3">Filter by Topic</h2>
+        <h2 class="text-sm font-semibold uppercase tracking-wider text-secondary mb-3">Topics</h2>
         <div class="flex flex-wrap gap-2">
             {{/* Use configured tag styles */}}
             <button class="tag-filter-btn active inline-flex items-center px-3 py-1 bg-tag-bg-active border border-tag-border-active text-tag-text-active rounded-tag text-sm font-medium transition-colors" data-tag="all">
@@ -33,7 +33,7 @@
                     {{ $tagsStr = delimit . " " | lower }}
                 {{ end }}
                 {{/* Use configured subtle border */}}
-                <li class="article-item border-b border-subtle pb-3" data-tags="{{ $tagsStr }}">
+                <li class="article-item pb-3" data-tags="{{ $tagsStr }}">
                     {{/* Use configured primary text and accent hover */}}
                     <a href="{{ .RelPermalink }}" class="text-lg font-medium text-primary hover:text-accent transition-colors group">
                        {{ .Title }}

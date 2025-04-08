@@ -1,5 +1,5 @@
 ---
-title: "Data Contract"
+title: "Data Contract: Responsibilities are distributed between domains, Data product distribution and usage"
 date: 2023-10-27T10:00:00Z
 draft: false
 tags: ["Programming", "AI"]
