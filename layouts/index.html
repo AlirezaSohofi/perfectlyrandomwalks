@@ -11,8 +11,8 @@
                 All Topics
             </button>
             {{ range .Site.Taxonomies.tags.Alphabetical }}
-                {{/* Use configured tag styles */}}
-                <button class="tag-filter-btn inline-flex items-center px-3 py-1 bg-tag-bg border border-tag-border text-tag-text rounded-tag text-sm font-medium hover:bg-tag-bg-hover hover:border-tag-border-hover transition-colors" data-tag="{{ .Name | lower }}">
+                {{/* Use STANDARD Tailwind classes for hover as a diagnostic test */}}
+                <button class="tag-filter-btn inline-flex items-center px-3 py-1 bg-tag-bg border border-tag-border text-tag-text rounded-tag text-sm font-medium hover:bg-gray-100 hover:border-gray-500 transition-colors" data-tag="{{ .Name | lower }}">
                     {{ .Page.Title }} 
                     {{/* Use configured count background */}}
                     <span class="ml-1.5 text-xs font-mono bg-tag-bg-count rounded px-1">{{ .Count }}</span> 
@@ -33,9 +33,9 @@
                     {{ $tagsStr = delimit . " " | lower }}
                 {{ end }}
                 {{/* Use configured subtle border */}}
-                <li class="article-item pb-3" data-tags="{{ $tagsStr }}">
-                    {{/* Use configured primary text and accent hover */}}
-                    <a href="{{ .RelPermalink }}" class="text-lg font-medium text-primary hover:text-accent transition-colors group">
+                <li class="article-item border-b border-subtle pb-3" data-tags="{{ $tagsStr }}">
+                    {{/* Use standard blue color as a test */}}
+                    <a href="{{ .RelPermalink }}" class="text-lg font-medium text-primary hover:text-blue-600 transition-colors group">
                        {{ .Title }}
                        <span class="opacity-0 group-hover:opacity-100 transition-opacity duration-200 ml-1">→</span>
                     </a>
@@ -47,6 +47,27 @@
     </section>
 </div>
 
+{{/* CSS diagnostic styles */}}
+<style>
+/* Diagnostic styles to force hover effects */
+.tag-filter-btn:not(.active):hover {
+    background-color: #f3f4f6 !important; /* Light gray */
+    border-color: #6b7280 !important; /* Medium gray */
+}
+
+/* Preserve active state appearance */
+.tag-filter-btn.active {
+    background-color: #f3f4f6;
+    border-color: #000000;
+    color: #000000;
+}
+
+/* Force accent color on hover */
+#article-list a:hover {
+    color: #3b82f6 !important; /* Blue */
+}
+</style>
+
 {{/* Updated JS for Tag Filtering using configured classes */}}
 <script>
 document.addEventListener('DOMContentLoaded', () => {
@@ -57,50 +78,39 @@ document.addEventListener('DOMContentLoaded', () => {
     const noArticlesMsg = document.getElementById('no-articles-msg');
     const tagButtons = tagFilterSection.querySelectorAll('.tag-filter-btn');
 
-    // Function to update styles based on active state using configured names
-    const updateButtonStyles = (button, isActive) => {
-        // Base classes (apply universally if needed, or rely on HTML)
-        button.classList.add('border', 'text-sm', 'font-medium', 'transition-colors', 'rounded-tag'); 
-
-        // Active classes from config
-        const activeClasses = ['active', 'bg-tag-bg-active', 'border-tag-border-active', 'text-tag-text-active'];
-        // Inactive classes from config
-        const inactiveClasses = ['bg-tag-bg', 'border-tag-border', 'text-tag-text'];
-        // Hover classes (managed by Tailwind via hover: prefixes in HTML)
-
-        if (isActive) {
-            button.classList.remove(...inactiveClasses);
-            button.classList.add(...activeClasses);
-        } else {
-            button.classList.remove(...activeClasses);
-            button.classList.add(...inactiveClasses);
-        }
-        // Ensure count span style remains distinct if needed
-        const countSpan = button.querySelector('span');
-        if (countSpan) {
-             countSpan.classList.add('bg-tag-bg-count'); 
-        }
+    // Simpler function to just toggle active class
+    const setActiveButton = (activeButton) => {
+        // Remove active class and restore original styling
+        tagButtons.forEach(btn => {
+            btn.classList.remove('active');
+            btn.classList.remove('bg-tag-bg-active', 'border-tag-border-active', 'text-tag-text-active');
+            btn.classList.add('bg-tag-bg', 'border-tag-border', 'text-tag-text');
+        });
+        
+        // Add active class and styling
+        activeButton.classList.add('active');
+        activeButton.classList.add('bg-tag-bg-active', 'border-tag-border-active', 'text-tag-text-active');
+        activeButton.classList.remove('bg-tag-bg', 'border-tag-border', 'text-tag-text');
     };
     
-    tagButtons.forEach(btn => {
-        updateButtonStyles(btn, btn.classList.contains('active'));
-    });
-
+    // Handle click events
     tagButtons.forEach(button => {
         button.addEventListener('click', () => {
-            tagButtons.forEach(btn => updateButtonStyles(btn, false)); 
-            updateButtonStyles(button, true); 
-
+            setActiveButton(button);
+            
+            // Filter articles
             if (articleList && noArticlesMsg) {
                 const selectedTag = button.getAttribute('data-tag');
                 const articleItems = articleList.querySelectorAll('.article-item');
                 let articlesFound = 0;
+                
                 articleItems.forEach(item => {
                     const itemTags = item.getAttribute('data-tags')?.split(' ') || [];
                     const shouldShow = selectedTag === 'all' || itemTags.includes(selectedTag);
                     item.classList.toggle('hidden', !shouldShow);
                     if (shouldShow) articlesFound++;
                 });
+                
                 noArticlesMsg.classList.toggle('hidden', articlesFound > 0);
             }
         });
