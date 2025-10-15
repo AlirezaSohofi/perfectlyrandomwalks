@@ -5,13 +5,17 @@
     <div class="max-w-content mx-auto px-4 md:px-6 border-b border-subtle">
         <nav class="flex justify-between items-center py-3" aria-label="Main navigation">
             {{/* Use configured primary text and accent hover color */}}
-            <a href="{{ .Site.BaseURL }}" class="text-lg font-semibold text-primary hover:text-accent transition-colors">
+            <a href="{{ .Site.BaseURL }}" class="text-lg font-semibold text-primary hover:text-primary transition-opacity">
                 {{ .Site.Title | default "Home" }}
             </a>
 
             {{/* Use configured secondary text and strong hover color */}}
             <div class="flex items-center space-x-4">
                  <a href="/about/" class="text-sm text-secondary hover:text-strong transition-colors">About</a>
+                 <a href="/feeds/" class="text-sm text-secondary hover:text-strong transition-colors" title="RSS Feeds">RSS</a>
+                 {{ with .Site.Params.linkedinUrl }}
+                 <a href="{{ . }}" class="text-sm text-secondary hover:text-strong transition-colors" title="LinkedIn Profile" target="_blank" rel="noopener noreferrer">Linkedin</a>
+                 {{ end }}
             </div>
         </nav>
     </div>

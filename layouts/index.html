@@ -1,21 +1,20 @@
 {{/* layouts/index.html */}}
 {{ define "main" }}
-<div class="homepage-content">
+<div class="homepage-content max-w-2xl mx-auto"> {{/* Limit width for better readability */}}
     {{/* Tag Filtering Section */}}
-    <section id="tag-filter-section" class="mb-8">
-        {{/* Use configured secondary text */}}
-        <h2 class="text-sm font-semibold uppercase tracking-wider text-secondary mb-3">Topics</h2>
-        <div class="flex flex-wrap gap-2">
-            {{/* Use configured tag styles */}}
-            <button class="tag-filter-btn active inline-flex items-center px-3 py-1 bg-tag-bg-active border border-tag-border-active text-tag-text-active rounded-tag text-sm font-medium transition-colors" data-tag="all">
+    <section id="tag-filter-section" class="mb-6"> {{/* Reduced from mb-10 */}}
+        {{/* Smaller, more subtle heading */}}
+        <h2 class="text-xs font-semibold uppercase tracking-wider text-gray-400 mb-3">Topics</h2> {{/* Reduced from mb-4 */}}
+        <div class="flex flex-wrap gap-1"> {{/* Reduced from gap-1.5 */}}
+            {{/* Smaller, more refined tag buttons */}}
+            <button class="tag-filter-btn active inline-flex items-center px-2 py-0.5 bg-gray-100 border border-gray-300 text-gray-800 rounded text-xs font-medium transition-colors" data-tag="all">
                 All Topics
             </button>
             {{ range .Site.Taxonomies.tags.Alphabetical }}
-                {{/* Use STANDARD Tailwind classes for hover as a diagnostic test */}}
-                <button class="tag-filter-btn inline-flex items-center px-3 py-1 bg-tag-bg border border-tag-border text-tag-text rounded-tag text-sm font-medium hover:bg-gray-100 hover:border-gray-500 transition-colors" data-tag="{{ .Name | lower }}">
+                <button class="tag-filter-btn inline-flex items-center px-2 py-0.5 bg-white border border-gray-200 text-gray-600 rounded text-xs font-medium hover:bg-gray-50 hover:border-gray-300 transition-colors" data-tag="{{ .Name | lower }}">
                     {{ .Page.Title }} 
-                    {{/* Use configured count background */}}
-                    <span class="ml-1.5 text-xs font-mono bg-tag-bg-count rounded px-1">{{ .Count }}</span> 
+                    {{/* Smaller count badge */}}
+                    <span class="ml-1 text-xs font-mono bg-gray-100 text-gray-500 rounded px-1">{{ .Count }}</span> 
                 </button>
             {{ end }}
         </div>
@@ -23,52 +22,116 @@
 
     {{/* Article List Section */}}
     <section id="article-list-section">
-        {{/* Use configured secondary text */}}
-        <h2 class="text-sm font-semibold uppercase tracking-wider text-secondary mb-3">Essays</h2>
-        <ul id="article-list" class="space-y-3">
+        {{/* Smaller heading */}}
+        <h2 class="text-xs font-semibold uppercase tracking-wider text-gray-400 mb-4">Essays</h2> {{/* Reduced from mb-6 */}}
+        <ul id="article-list" class="space-y-3"> {{/* Reduced from space-y-6 */}}
             {{ $pages := where .Site.RegularPages "Type" "in" .Site.Params.mainSections | default .Site.RegularPages }}
-            {{ range $pages.ByDate.Reverse }}
+            {{ $paginator := .Paginate $pages.ByDate.Reverse }}
+            {{ range $paginator.Pages }}
                 {{ $tagsStr := "" }}
                 {{ with .Params.tags }}
                     {{ $tagsStr = delimit . " " | lower }}
                 {{ end }}
-                {{/* Use configured subtle border */}}
-                <li class="article-item border-b border-subtle pb-3" data-tags="{{ $tagsStr }}">
-                    {{/* Use standard blue color as a test */}}
-                    <a href="{{ .RelPermalink }}" class="text-lg font-medium text-primary hover:text-blue-600 transition-colors group">
+                {{/* More compact article item */}}
+                <li class="article-item border-b border-gray-100 pb-3" data-tags="{{ $tagsStr }}"> {{/* Reduced from pb-5 */}}
+                    {{/* Slightly smaller title for compactness */}}
+                    <a href="{{ .RelPermalink }}" class="block text-lg font-semibold text-gray-900 hover:text-gray-900 transition-opacity group mb-1"> {{/* Reduced from text-xl and mb-2 */}}
                        {{ .Title }}
                        <span class="opacity-0 group-hover:opacity-100 transition-opacity duration-200 ml-1">→</span>
                     </a>
+                    <!-- {{/* Show first paragraph or excerpt with gray color */}}
+                    <div class="text-gray-600 text-base leading-relaxed mb-3">
+                        {{ $content := .Content | plainify }}
+                        {{ $firstPara := index (split $content "\n\n") 0 }}
+                        {{ if gt (len $firstPara) 200 }}
+                            {{ $firstPara | truncate 200 }}
+                        {{ else }}
+                            {{ $firstPara }}
+                        {{ end }}
+                    </div> -->
+                    {{/* Smaller, more subtle tags */}}
+                    {{ with .Params.tags }}
+                    <div class="flex flex-wrap gap-1">
+                        {{ range . }}
+                        <span class="inline-flex items-center px-1.5 py-0.5 text-xs font-medium bg-gray-50 text-gray-600 rounded">
+                            {{ . }}
+                        </span>
+                        {{ end }}
+                    </div>
+                    {{ end }}
                 </li>
             {{ end }}
         </ul>
+        
+        {{/* Pagination */}}
+        {{ if gt $paginator.TotalPages 1 }}
+        <nav class="mt-8 flex justify-center"> {{/* Reduced from mt-12 */}}
+            <div class="flex items-center space-x-2">
+                {{ if $paginator.HasPrev }}
+                    <a href="{{ $paginator.Prev.URL }}" class="px-3 py-2 text-sm font-medium text-gray-500 bg-white border border-gray-300 rounded-md hover:bg-gray-50 dark:bg-gray-800 dark:border-gray-600 dark:text-gray-300 dark:hover:bg-gray-700">
+                        ← Previous
+                    </a>
+                {{ end }}
+                
+                {{ range $paginator.Pagers }}
+                    {{ if eq . $paginator }}
+                        <span class="px-3 py-2 text-sm font-medium text-white bg-gray-800 border border-gray-800 rounded-md dark:bg-gray-200 dark:text-gray-800 dark:border-gray-200">
+                            {{ .PageNumber }}
+                        </span>
+                    {{ else }}
+                        <a href="{{ .URL }}" class="px-3 py-2 text-sm font-medium text-gray-500 bg-white border border-gray-300 rounded-md hover:bg-gray-50 dark:bg-gray-800 dark:border-gray-600 dark:text-gray-300 dark:hover:bg-gray-700">
+                            {{ .PageNumber }}
+                        </a>
+                    {{ end }}
+                {{ end }}
+                
+                {{ if $paginator.HasNext }}
+                    <a href="{{ $paginator.Next.URL }}" class="px-3 py-2 text-sm font-medium text-gray-500 bg-white border border-gray-300 rounded-md hover:bg-gray-50 dark:bg-gray-800 dark:border-gray-600 dark:text-gray-300 dark:hover:bg-gray-700">
+                        Next →
+                    </a>
+                {{ end }}
+            </div>
+        </nav>
+        {{ end }}
+        
         {{/* Use configured secondary text */}}
-        <p id="no-articles-msg" class="hidden text-secondary mt-6">No articles found matching the selected topic.</p>
+        <p id="no-articles-msg" class="hidden text-gray-500 mt-6 text-center dark:text-gray-400">No articles found matching the selected topic.</p>
     </section>
 </div>
 
-{{/* CSS diagnostic styles */}}
 <style>
-/* Diagnostic styles to force hover effects */
-.tag-filter-btn:not(.active):hover {
-    background-color: #f3f4f6 !important; /* Light gray */
-    border-color: #6b7280 !important; /* Medium gray */
-}
-
-/* Preserve active state appearance */
+/* Active tag button styling */
 .tag-filter-btn.active {
-    background-color: #f3f4f6;
-    border-color: #000000;
-    color: #000000;
+    background-color: #f3f4f6 !important;
+    border-color: #374151 !important;
+    color: #111827 !important;
 }
 
-/* Force accent color on hover */
+/* Dark mode for active tag */
+.dark .tag-filter-btn.active {
+    background-color: #374151 !important;
+    border-color: #6b7280 !important;
+    color: #f9fafb !important;
+}
+
+/* Hover effects for tag buttons */
+.tag-filter-btn:not(.active):hover {
+    background-color: #f9fafb !important;
+    border-color: #d1d5db !important;
+}
+
+.dark .tag-filter-btn:not(.active):hover {
+    background-color: #374151 !important;
+    border-color: #6b7280 !important;
+}
+
+/* Article hover effects */
 #article-list a:hover {
-    color: #3b82f6 !important; /* Blue */
+    opacity: 0.8;
 }
 </style>
 
-{{/* Updated JS for Tag Filtering using configured classes */}}
+{{/* Updated JS for Tag Filtering */}}
 <script>
 document.addEventListener('DOMContentLoaded', () => {
     const tagFilterSection = document.getElementById('tag-filter-section');
@@ -78,27 +141,17 @@ document.addEventListener('DOMContentLoaded', () => {
     const noArticlesMsg = document.getElementById('no-articles-msg');
     const tagButtons = tagFilterSection.querySelectorAll('.tag-filter-btn');
 
-    // Simpler function to just toggle active class
     const setActiveButton = (activeButton) => {
-        // Remove active class and restore original styling
         tagButtons.forEach(btn => {
             btn.classList.remove('active');
-            btn.classList.remove('bg-tag-bg-active', 'border-tag-border-active', 'text-tag-text-active');
-            btn.classList.add('bg-tag-bg', 'border-tag-border', 'text-tag-text');
         });
-        
-        // Add active class and styling
         activeButton.classList.add('active');
-        activeButton.classList.add('bg-tag-bg-active', 'border-tag-border-active', 'text-tag-text-active');
-        activeButton.classList.remove('bg-tag-bg', 'border-tag-border', 'text-tag-text');
     };
     
-    // Handle click events
     tagButtons.forEach(button => {
         button.addEventListener('click', () => {
             setActiveButton(button);
             
-            // Filter articles
             if (articleList && noArticlesMsg) {
                 const selectedTag = button.getAttribute('data-tag');
                 const articleItems = articleList.querySelectorAll('.article-item');

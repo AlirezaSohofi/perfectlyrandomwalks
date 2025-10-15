@@ -14,6 +14,14 @@
     <meta name="author" content="{{ .Params.Author}}" />
     {{ end -}}
 
+    {{/* RSS Feed Links */}}
+    {{ range .AlternativeOutputFormats -}}
+        {{ printf `<link rel="%s" type="%s" href="%s" title="%s" />` .Rel .MediaType.Type .Permalink $.Site.Title | safeHTML }}
+    {{ end -}}
+    
+    {{/* Main RSS feed link */}}
+    <link rel="alternate" type="application/rss+xml" href="{{ .Site.BaseURL }}index.xml" title="{{ .Site.Title }}" />
+
     {{ hugo.Generator }}
     {{ partialCached "css.html" . }}
     {{ partialCached "js.html" . }}

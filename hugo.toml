@@ -1,6 +1,6 @@
 baseURL = "http://localhost:1313/"
 languageCode = "en-us"
-title = "Perfectly Random Walks"
+title = "Alireza Sohofi"
 # theme = ""  <-- IMPORTANT: Commented out or deleted
 
 # Keep other settings like taxonomies etc. if you added them
@@ -13,6 +13,9 @@ title = "Perfectly Random Walks"
   section = ["HTML", "RSS"]
   taxonomy = ["HTML", "RSS"]
   term = ["HTML", "RSS"]
+
+[params]
+  linkedinUrl = "https://linkedin.com/in/alireza-sohofi"
 
 [build]
   writeStats = true 

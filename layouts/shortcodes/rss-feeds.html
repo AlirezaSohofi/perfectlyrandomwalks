@@ -1,0 +1,24 @@
+<div class="space-y-2">
+    {{/* All Posts as first row */}}
+    <div class="flex items-center justify-between border-b border-gray-200 pb-2">
+        <span class="font-medium">All Posts</span>
+        <div class="flex items-center space-x-4">
+            <span class="text-sm text-gray-500">{{ len .Site.RegularPages }} {{ if eq (len .Site.RegularPages) 1 }}post{{ else }}posts{{ end }}</span>
+            <a href="/index.xml" class="text-sm text-gray-600 hover:text-gray-800 underline">
+                RSS Feed
+            </a>
+        </div>
+    </div>
+    {{/* Topic-specific feeds */}}
+    {{ range .Site.Taxonomies.tags.Alphabetical }}
+        <div class="flex items-center justify-between border-b border-gray-200 pb-2">
+            <span class="font-medium">{{ .Page.Title }}</span>
+            <div class="flex items-center space-x-4">
+                <span class="text-sm text-gray-500">{{ .Count }} {{ if eq .Count 1 }}post{{ else }}posts{{ end }}</span>
+                <a href="{{ .Page.RelPermalink }}index.xml" class="text-sm text-gray-600 hover:text-gray-800 underline">
+                    RSS Feed
+                </a>
+            </div>
+        </div>
+    {{ end }}
+</div>
