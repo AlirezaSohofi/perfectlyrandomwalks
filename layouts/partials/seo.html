@@ -1,0 +1,110 @@
+{{- $siteTitle := .Site.Title -}}
+{{- $authorName := .Site.Params.author.name | default $siteTitle -}}
+{{- $authorURL := .Site.Params.author.url | default .Site.Params.linkedinUrl -}}
+
+{{- $title := $siteTitle -}}
+{{- if not .IsHome -}}
+  {{- $title = printf "%s | %s" .Title $siteTitle -}}
+{{- else if .Site.Params.tagline -}}
+  {{- $title = printf "%s | %s" $siteTitle .Site.Params.tagline -}}
+{{- end -}}
+
+{{- $description := .Description -}}
+{{- if not $description -}}
+  {{- $description = .Summary -}}
+{{- end -}}
+{{- if not $description -}}
+  {{- $description = .Site.Params.description -}}
+{{- end -}}
+{{- $description = $description | plainify | truncate 160 -}}
+
+{{- $canonical := .Permalink -}}
+{{- $ogType := "website" -}}
+{{- if eq .Section "posts" -}}
+  {{- $ogType = "article" -}}
+{{- end -}}
+
+<title>{{ $title }}</title>
+<meta name="description" content="{{ $description }}" />
+<link rel="canonical" href="{{ $canonical }}" />
+
+{{- with .Params.tags -}}
+<meta name="keywords" content="{{ delimit . ", " }}" />
+{{- end -}}
+
+<meta name="author" content="{{ $authorName }}" />
+
+<meta property="og:site_name" content="{{ $siteTitle }}" />
+<meta property="og:title" content="{{ if .IsHome }}{{ $siteTitle }}{{ else }}{{ .Title }}{{ end }}" />
+<meta property="og:description" content="{{ $description }}" />
+<meta property="og:url" content="{{ $canonical }}" />
+<meta property="og:type" content="{{ $ogType }}" />
+<meta property="og:locale" content="{{ .Site.Language.Lang | default "en_US" }}" />
+
+{{- $ogImage := "" -}}
+{{- with .Params.image -}}
+  {{- with $.Resources.GetMatch . -}}
+    {{- $ogImage = .Permalink -}}
+  {{- else -}}
+    {{- $ogImage = . | absURL -}}
+  {{- end -}}
+{{- else -}}
+  {{- with .Site.Params.ogImage -}}
+    {{- $ogImage = . | absURL -}}
+  {{- end -}}
+{{- end -}}
+{{- with $ogImage -}}
+<meta property="og:image" content="{{ . }}" />
+<meta name="twitter:image" content="{{ . }}" />
+{{- end -}}
+
+{{- if eq .Section "posts" -}}
+<meta property="article:published_time" content="{{ .Date.Format "2006-01-02T15:04:05Z07:00" }}" />
+<meta property="article:modified_time" content="{{ .Lastmod.Format "2006-01-02T15:04:05Z07:00" }}" />
+<meta property="article:author" content="{{ $authorName }}" />
+{{- range .Params.tags -}}
+<meta property="article:tag" content="{{ . }}" />
+{{- end -}}
+{{- end -}}
+
+<meta name="twitter:card" content="summary" />
+<meta name="twitter:title" content="{{ if .IsHome }}{{ $siteTitle }}{{ else }}{{ .Title }}{{ end }}" />
+<meta name="twitter:description" content="{{ $description }}" />
+
+<script type="application/ld+json">
+{
+  "@context": "https://schema.org",
+  "@graph": [
+    {
+      "@type": "WebSite",
+      "@id": "{{ .Site.BaseURL }}#website",
+      "url": "{{ .Site.BaseURL }}",
+      "name": {{ $siteTitle | jsonify }},
+      "description": {{ .Site.Params.description | jsonify }},
+      "inLanguage": {{ (.Site.Language.Lang | default "en-US") | jsonify }},
+      "publisher": { "@id": "{{ .Site.BaseURL }}#person" }
+    },
+    {
+      "@type": "Person",
+      "@id": "{{ .Site.BaseURL }}#person",
+      "name": {{ $authorName | jsonify }},
+      "url": {{ .Site.BaseURL | jsonify }}{{ with $authorURL }},
+      "sameAs": [{{ $authorURL | jsonify }}]{{ end }}
+    }{{ if eq .Section "posts" }},
+    {
+      "@type": "BlogPosting",
+      "@id": "{{ $canonical }}#article",
+      "url": {{ $canonical | jsonify }},
+      "headline": {{ .Title | jsonify }},
+      "description": {{ $description | jsonify }},
+      "datePublished": {{ .Date.Format "2006-01-02T15:04:05Z07:00" | jsonify }},
+      "dateModified": {{ .Lastmod.Format "2006-01-02T15:04:05Z07:00" | jsonify }},
+      "author": { "@id": "{{ .Site.BaseURL }}#person" },
+      "publisher": { "@id": "{{ .Site.BaseURL }}#person" },
+      "mainEntityOfPage": { "@type": "WebPage", "@id": {{ $canonical | jsonify }} },
+      "inLanguage": {{ (.Site.Language.Lang | default "en-US") | jsonify }}{{ with .Params.tags }},
+      "keywords": {{ delimit . ", " | jsonify }}{{ end }}
+    }{{ end }}
+  ]
+}
+</script>

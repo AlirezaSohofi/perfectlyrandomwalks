@@ -1,0 +1,23 @@
+    <meta charset="utf-8" />
+    <meta name="viewport" content="width=device-width, initial-scale=1" />
+    {{ partial "seo.html" . }}
+
+    {{/* RSS Feed Links — AlternativeOutputFormats covers all page types including home */}}
+    {{ range .AlternativeOutputFormats -}}
+        {{ printf `<link rel="%s" type="%s" href="%s" title="%s" />` .Rel .MediaType.Type .Permalink $.Site.Title | safeHTML }}
+    {{ end -}}
+
+    {{ hugo.Generator }}
+
+    {{/* Apply saved dark mode preference before CSS loads to prevent flash */}}
+    <script>
+      (function() {
+        var saved = localStorage.getItem('theme');
+        if (saved === 'dark' || (!saved && window.matchMedia('(prefers-color-scheme: dark)').matches)) {
+          document.documentElement.classList.add('dark');
+        }
+      })();
+    </script>
+
+    {{ partialCached "css.html" . }}
+    {{ partialCached "js.html" . }}

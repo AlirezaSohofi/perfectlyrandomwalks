@@ -1,0 +1,39 @@
+baseURL = "https://alireza-sohofi.com/"
+languageCode = "en-us"
+title = "Alireza Sohofi"
+
+[taxonomies]
+  tag = "tags"
+
+[outputFormats.LLMS]
+  mediaType = "text/plain"
+  baseName = "llms"
+  isPlainText = true
+  notAlternative = true
+
+[outputs]
+  home = ["HTML", "RSS", "Sitemap", "LLMS"]
+  page = ["HTML"]
+  section = ["HTML", "RSS"]
+  taxonomy = ["HTML", "RSS"]
+  term = ["HTML", "RSS"]
+
+[sitemap]
+  changefreq = "weekly"
+  priority = 0.5
+
+[params]
+  description = "Essays on AI, Software, Startup"
+  linkedinUrl = "https://linkedin.com/in/alireza-sohofi"
+  [params.author]
+    name = "Alireza Sohofi"
+    url = "https://alireza-sohofi.com/about/"
+
+[build]
+  writeStats = true
+
+[markup.goldmark.renderer]
+  unsafe = true
+
+[security.node.permissions]
+disable = true

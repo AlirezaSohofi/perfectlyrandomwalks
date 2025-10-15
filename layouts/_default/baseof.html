@@ -1,0 +1,28 @@
+<!DOCTYPE html>
+<html lang="{{ .Site.LanguageCode }}">
+<head>
+    {{ partial "head.html" . }}
+</head>
+{{/* Use configured base background and primary text color */}}
+<body class="bg-base text-primary dark:bg-gray-900 dark:text-gray-100 flex flex-col min-h-screen">
+
+    {{ partial "header.html" . }}
+
+    {{/* Use standard blog content width */}}
+    <main id="main-content" class="flex-1 w-full px-4 py-8 md:px-6 md:py-10">
+        {{ block "main" . }}{{ end }}
+    </main>
+
+    {{/* Footer with smaller text and better spacing */}}
+    <footer class="mt-auto w-full">
+        <div class="max-w-2xl mx-auto px-4 py-6 md:px-6">
+            <div class="border-t border-gray-200 dark:border-gray-700 pt-4 text-center">
+                <p class="text-xs text-gray-400 dark:text-gray-500">
+                    © {{ now.Format "2006" }} Alireza Sohofi | Powered by <a href="https://gohugo.io/" target="_blank" rel="noopener noreferrer" class="hover:underline">Hugo</a>
+                </p>
+            </div>
+        </div>
+    </footer>
+
+</body>
+</html>

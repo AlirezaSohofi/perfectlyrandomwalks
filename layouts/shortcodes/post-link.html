@@ -1,0 +1,11 @@
+{{/* Usage: {{< post-link "data-contract" >}} or {{< post-link "data-contract" "Custom Link Text" >}} */}}
+{{ $slug := .Get 0 }}
+{{ $linkText := .Get 1 }}
+{{ $page := .Site.GetPage (printf "/posts/%s" $slug) }}
+{{ if $page }}
+    <a href="{{ $page.RelPermalink }}" class="text-blue-600 hover:text-blue-800 underline">
+        {{ if $linkText }}{{ $linkText }}{{ else }}{{ $page.Title }}{{ end }}
+    </a>
+{{ else }}
+    <span class="text-red-500">[Post not found: {{ $slug }}]</span>
+{{ end }}

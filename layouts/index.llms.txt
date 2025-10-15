@@ -1,0 +1,14 @@
+# {{ .Site.Title }}
+> {{ .Site.Params.description }}
+
+## Essays
+{{ range where .Site.RegularPages "Section" "eq" "posts" }}
+- [{{ .Title }}]({{ .Permalink }}){{ with .Description }}: {{ . }}{{ end }}
+{{ end }}
+
+## Pages
+- [About]({{ "about/" | absURL }}): Author bio and background.
+- [RSS Feeds]({{ "feeds/" | absURL }}): Subscribe to all posts and topic feeds.
+
+## Optional
+- [Sitemap]({{ "sitemap.xml" | absURL }})

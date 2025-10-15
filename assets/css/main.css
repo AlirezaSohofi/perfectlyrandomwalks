@@ -1,0 +1,21 @@
+@tailwind base;
+@tailwind components;
+@tailwind utilities;
+
+.article-item {
+    transition: opacity 0.3s ease-out, max-height 0.3s ease-out;
+    overflow: hidden;
+    opacity: 1;
+    max-height: 200px;
+}
+
+.article-item.hidden {
+    opacity: 0;
+    max-height: 0;
+    margin-top: 0 !important;
+    margin-bottom: 0 !important;
+    padding-top: 0 !important;
+    padding-bottom: 0 !important;
+    border-width: 0 !important;
+    visibility: hidden;
+}

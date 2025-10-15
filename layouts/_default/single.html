@@ -1,0 +1,31 @@
+{{/* layouts/_default/single.html */}}
+{{ define "main" }}
+<article class="max-w-prose mx-auto"> {{/* Use standard blog width */}}
+    <header class="mb-8 border-b border-gray-300 dark:border-gray-700 pb-4">
+        <h1 class="mb-2 text-xl md:text-2xl font-bold tracking-tight dark:text-gray-100">{{ .Title }}</h1>
+        {{ if eq .Type "posts" }}
+        <p class="text-gray-400 dark:text-gray-500 text-sm">
+            Published on <time datetime="{{ .Date.Format "2006-01-02T15:04:05Z07:00" }}">{{ .Date.Format "January 2, 2006" }}</time>
+        </p>
+        {{ end }}
+        
+        {{/* Tags - made non-clickable */}}
+        {{ with .Params.tags }}
+        <div class="mt-3 flex flex-wrap gap-2">
+            {{ range . }}
+            <span class="inline-flex items-center px-2 py-1 text-xs font-medium bg-gray-100 dark:bg-gray-800 text-gray-800 dark:text-gray-300 rounded">
+                {{ . }}
+            </span>
+            {{ end }}
+        </div>
+        {{ end }}
+    </header>
+
+    <div class="content prose prose-gray dark:prose-invert max-w-none">
+        {{ .Content }}
+    </div>
+
+    {{/* Remove all post navigation as requested */}}
+
+</article>
+{{ end }}

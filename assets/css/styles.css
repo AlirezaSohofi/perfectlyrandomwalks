@@ -1,0 +1,25 @@
+@import "tailwindcss";
+@plugin "@tailwindcss/typography";
+
+@custom-variant dark (&:where(.dark, .dark *));
+
+@theme {
+  --color-avocado-100: oklch(0.99 0 0);
+  --color-avocado-200: oklch(0.98 0.04 113.22);
+  --color-avocado-300: oklch(0.94 0.11 115.03);
+  --color-avocado-400: oklch(0.92 0.19 114.08);
+  --color-avocado-500: oklch(0.84 0.18 117.33);
+  --color-avocado-600: oklch(0.53 0.12 118.34);
+}
+
+.sample {
+  @apply text-red-400 italic;
+}
+
+.content.prose h2 {
+  @apply mt-8 mb-4 text-xl font-bold leading-snug text-gray-900 dark:text-gray-100;
+}
+
+.content.prose h3 {
+  @apply mt-6 mb-3 text-lg font-bold leading-snug text-gray-900 dark:text-gray-100;
+}
